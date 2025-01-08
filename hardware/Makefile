@@ -4,3 +4,6 @@ build/test: test.cpp
 
 test: build/test
 	./build/test
+
+clean:
+	rm -rf build
