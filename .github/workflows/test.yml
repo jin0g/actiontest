@@ -8,14 +8,15 @@ on:
 
 jobs:
   build:
-
     runs-on: ubuntu-latest
-
     steps:
     - uses: actions/checkout@v4
     - name: make
       working-directory: ./hardware
       run: make
+  test:
+    runs-on: ubuntu-latest
+    steps:
     - name: make test
       working-directory: ./hardware
       run: make test
