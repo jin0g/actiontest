@@ -33,7 +33,8 @@ jobs:
       - name: Build C++ shared library
         run: |
           cd hardware
-          make $(make -C . -sp | grep '^TARGET_SO :=' | cut -d' ' -f3) # MakefileからTARGET_SOを取得してビルド
+          # make clean # オプション: 念のためビルド前にクリーンする
+          make build/libadd.so # ターゲット名を直接指定
 
       - name: Run Python Integration Test
         run: python3 software/run-test.py 
