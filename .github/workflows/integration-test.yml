@@ -33,7 +33,7 @@ jobs:
       - name: Build C++ shared library
         run: |
           cd hardware
-          # make clean # オプション: 念のためビルド前にクリーンする
+          make clean # ビルド前にクリーンアップを実行
           make build/libadd.so # ターゲット名を直接指定
 
       - name: Run Python Integration Test
