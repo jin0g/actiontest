@@ -1,0 +1,39 @@
+name: Integration Test (Python + SO)
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'hardware/**'
+      - 'software/**'
+      - '.github/workflows/integration-test.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'hardware/**'
+      - 'software/**'
+      - '.github/workflows/integration-test.yml'
+
+jobs:
+  test:
+    name: Integration Test (Python + SO)
+    runs-on: ubuntu-latest
+    # ファイル分割したため needs は削除 (ジョブ内でビルドするため問題ないはず)
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install Python dependencies
+        run: pip install numpy
+
+      - name: Build C++ shared library
+        run: |
+          cd hardware
+          make $(make -C . -sp | grep '^TARGET_SO :=' | cut -d' ' -f3) # MakefileからTARGET_SOを取得してビルド
+
+      - name: Run Python Integration Test
+        run: python3 software/run-test.py 

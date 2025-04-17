@@ -1,0 +1,31 @@
+name: Software Test (Python Unit)
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'software/**'
+      - '.github/workflows/sw-test.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'software/**'
+      - '.github/workflows/sw-test.yml'
+
+jobs:
+  sw-test:
+    name: Software Test (Python Unit)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      # - name: Install Python dependencies
+      #   run: pip install pytest etc
+
+      - name: Run Python Unit Tests (Placeholder)
+        run: echo "No Python unit tests yet." 
