@@ -1,22 +1,38 @@
-name: C/C++ CI
+name: C++/Python Test
 
 on:
   push:
-    branches: [ "main" ]
+    paths:
+      - 'hardware/**'
+      - 'software/**'
+      - '.github/workflows/test.yml'
   pull_request:
-    branches: [ "main" ]
+    paths:
+      - 'hardware/**'
+      - 'software/**'
+      - '.github/workflows/test.yml'
 
 jobs:
-  coverage:
+  build_and_test:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v4
-    - name: make
-      run: cd hardware && make
-    - name: make test
-      run: cd hardware && make test
-    - uses: actions/setup-python@v1
-      with:
-        python-version: '3.10'
-    - name: Python test
-      run: python3 hello.py
+      - uses: actions/checkout@v4
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.x'
+
+      - name: Install dependencies
+        run: pip install numpy
+
+      - name: Build C++ shared library
+        run: |
+          cd hardware
+          # HLSのインクルードパスを環境変数などから取得するか、固定パスを指定してください
+          # 例: export HLS_INCLUDE_PATH=/opt/Xilinx/Vitis_HLS/2023.2/include
+          # make build/libadd.so CXXFLAGS="-I$HLS_INCLUDE_PATH"
+          make build/libadd.so # HLSパスをMakefile内で正しく設定するか、ここでCXXFLAGSを指定
+
+      - name: Run Python test
+        run: python3 software/run-test.py
