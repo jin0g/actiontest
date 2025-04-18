@@ -1,0 +1,25 @@
+name: Hardware Test (C++)
+
+on:
+  push:
+    branches: [ main ]
+    paths:
+      - 'hardware/**'
+      - '.github/workflows/hw-test.yml'
+  pull_request:
+    branches: [ main ]
+    paths:
+      - 'hardware/**'
+      - '.github/workflows/hw-test.yml'
+
+jobs:
+  hw-test:
+    name: Hardware Test (C++)
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build and Run C++ Test
+        run: |
+          cd hardware
+          make hw-test 
